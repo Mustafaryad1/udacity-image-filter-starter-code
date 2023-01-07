@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import bodyParser from "body-parser";
 import {
   filterImageFromURL,
@@ -36,19 +36,19 @@ import {
 
   // Root Endpoint
   // Displays a simple message to the user
-  app.get("/", async (req, res) => {
-    const imageURL: string = req.query.image_url;
+  app.get("/", async (req: Request, res: Response) => {
+    const image_url: string = req.query.image_url;
 
-    if (!checkImageURL(imageURL))
+    if (!checkImageURL(image_url))
       return res
         .status(422)
         .send("Invalid image url--->try GET url/?image_url={{}}");
 
-    const path = await filterImageFromURL(imageURL);
+    const path = await filterImageFromURL(image_url);
 
     res.sendFile(path);
     res.on("finish", () => {
-      deleteLocalFiles([path])
+      deleteLocalFiles([path]);
     });
   });
 
