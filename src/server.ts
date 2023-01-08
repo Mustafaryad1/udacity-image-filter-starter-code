@@ -35,8 +35,12 @@ import {
   //! END @TODO1
 
   // Root Endpoint
-  // Displays a simple message to the user
   app.get("/", async (req: Request, res: Response) => {
+    return res.status(200).send("try GET url/filteredimage?image_url={{}}");
+  });
+
+  // Displays a simple message to the user
+  app.get("/filteredimage", async (req: Request, res: Response) => {
     const image_url: string = req.query.image_url;
 
     if (!checkImageURL(image_url))
@@ -46,7 +50,7 @@ import {
 
     const path = await filterImageFromURL(image_url);
 
-    res.sendFile(path);
+    res.status(200).sendFile(path);
     res.on("finish", () => {
       deleteLocalFiles([path]);
     });
